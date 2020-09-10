@@ -6,15 +6,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+enum Status{
+	RUNNING,
+	OVER
+}
+
 @Entity
 public class BiddingSystem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private int minimumBasePrice;
-    private int highestBidPlaced;
-    private int stepRate;
-    private boolean isRunning;
+    private int highestBidPlaced = 0;
+    private int stepRate = 20;
+    private Status isRunning = Status.RUNNING;
     
     protected BiddingSystem() {}
 
@@ -54,12 +59,15 @@ public class BiddingSystem {
 	public void setStepRate(int stepRate) {
 		this.stepRate = stepRate;
 	}
-	public boolean isRunning() {
+
+	public Status getIsRunning() {
 		return isRunning;
 	}
-	public void setRunning(boolean isRunning) {
+
+	public void setIsRunning(Status isRunning) {
 		this.isRunning = isRunning;
 	}
+	
     
 
 

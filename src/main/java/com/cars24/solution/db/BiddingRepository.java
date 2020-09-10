@@ -3,10 +3,11 @@ package com.cars24.solution.db;
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface BiddingRepository extends CrudRepository<BiddingSystem,Integer> {
+public interface BiddingRepository extends PagingAndSortingRepository<BiddingSystem,Integer> {
 
-  List<BiddingSystem> findAll();
+ // List<BiddingSystem> findAll();
 
   BiddingSystem findById(long id);
 }

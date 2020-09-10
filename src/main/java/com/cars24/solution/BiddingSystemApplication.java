@@ -14,25 +14,25 @@ import com.cars24.solution.db.BiddingSystem;
 public class BiddingSystemApplication {
 
 	private static final Logger log = LoggerFactory.getLogger(BiddingSystemApplication.class);
-	 
+
 	public static void main(String[] args) {
 		SpringApplication.run(BiddingSystemApplication.class, args);
 	}
-	
-	  @Bean
-	  public CommandLineRunner demo(BiddingRepository repository) {
-	    return (args) -> {
-	      // initialize auction
-	      repository.save(new BiddingSystem(100,10));
-	      repository.save(new BiddingSystem(200,10));
-	      repository.save(new BiddingSystem(150,10));
 
-	      for (BiddingSystem bid : repository.findAll()) {
-	        log.info(bid.toString());
-	      }
-	      log.info("");
+	@Bean
+	public CommandLineRunner demo(BiddingRepository repository) {
+		return (args) -> {
+			// initialize auction
 
-	    };
-	  }
+			for(int i=0; i<25; i++)
+				repository.save(new BiddingSystem(100,10));
+
+			for (BiddingSystem bid : repository.findAll()) {
+				log.info(bid.toString());
+			}
+			log.info("");
+
+		};
+	}
 
 }
