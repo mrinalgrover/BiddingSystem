@@ -16,6 +16,20 @@ public class BiddingSystem {
     private int stepRate;
     private boolean isRunning;
     
+    protected BiddingSystem() {}
+
+    public BiddingSystem(int minimumBasePrice, int stepRate) {
+      this.minimumBasePrice = minimumBasePrice;
+      this.stepRate = stepRate;
+    }
+
+    @Override
+    public String toString() {
+      return String.format(
+          "BiddingSystem[id=%d, minimumBasePrice='%s', stepRate='%s']",
+          id, minimumBasePrice, stepRate);
+    }
+    
 	public int getId() {
 		return id;
 	}

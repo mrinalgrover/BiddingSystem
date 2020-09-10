@@ -7,16 +7,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cars24.solution.db.BiddingRepository;
 import com.cars24.solution.db.BiddingSystem;
-import com.cars24.solution.db.User;
-import com.cars24.solution.db.UserRepository;
 
+
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 public class BiddingSystemController {
 	
+	private static final Logger log = LoggerFactory.getLogger(BiddingSystemController.class);
+	  
 	@Autowired
-	UserRepository userRepository;
+	BiddingRepository biddingRepository;
 	
 	/*
 	 * GET /auction?status=RUNNING
@@ -28,10 +34,10 @@ API should be paginated in nature. And you are free to change API structure base
 */
 	@GetMapping("/values")
     public @ResponseBody Iterable<BiddingSystem> index(){
-        return  userRepository.findAll();
+        return  biddingRepository.findAll();
     }
 	
-	  @PostMapping("/add") // Map ONLY POST Requests
+/*	  @PostMapping("/add") // Map ONLY POST Requests
 	  public @ResponseBody String addNewUser (@RequestParam int id
 	      , @RequestParam int step) {
 	    // @ResponseBody means the returned String is the response, not a view name
@@ -42,11 +48,11 @@ API should be paginated in nature. And you are free to change API structure base
 	   // n.setName(name);
 	    //n.setEmail(email);
 		bs.setId(id);
-		bs.setMbp(10);
+		bs.setMinimumBasePrice(100);
 		bs.setRunning(true);
 		bs.setStepRate(step);
 	    userRepository.save(bs);
 	    return "Saved";
 	  }
-
+*/
 }
