@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,17 +43,23 @@ API should be paginated in nature. And you are free to change API structure base
 	public @ResponseBody Page<BiddingSystem> index(@PageableDefault(page = 0, size = 20)
 	Pageable pageable){
 		
-		log.info("Showing running auctions");
 		return  biddingRepository.findAll(pageable);
 	}
 
 
 
 	@PostMapping("/auction/{itemCode}/bid") 
-	public @ResponseBody String placeNewBid ( @PathVariable int itemCode) {
+	public ResponseEntity<String>placeNewBid ( @PathVariable int itemCode, @RequestParam int bidAmount) {
 
 		
-		log.info("Bidding for item - "+itemCode);
+		log.info("Bidding for item - "+itemCode + ", amount : "+bidAmount);
+		
+		BiddingSystem bs = biddingRepository.findById(itemCode);
+		
+		if(bs!= null && bs.getId() == itemCode)
+			return ResponseEntity.status(201).body("Bid is Accepted");
+		else
+			return ResponseEntity.status(406).body("Bid is Rejected");
 
 //		BiddingSystem bs = new BiddingSystem();
 		//User n = new User();
@@ -64,7 +72,6 @@ API should be paginated in nature. And you are free to change API structure base
 //		userRepository.save(bs);
 		
 		
-		return "Saved bid : "+itemCode;
 	}
 	
 }

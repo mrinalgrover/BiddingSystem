@@ -9,5 +9,5 @@ public interface BiddingRepository extends PagingAndSortingRepository<BiddingSys
 
  // List<BiddingSystem> findAll();
 
-  BiddingSystem findById(long id);
+  BiddingSystem findById(int id);
 }
