@@ -48,3 +48,5 @@ AuthenticatorService will give 401 if the headers are not present.
 
 6. Conflicts are handled using Optimistic Locking. If there's a race condition, competing bid is rejected.
 
+7. Wavefront dashboard to monitor - https://wavefront.surf/dashboards/integration-spring-boot#_v01(g:(d:7200,ls:!t,s:1599834594,w:'2h'),l:(integration-spring-boot-4-3-2:(d:43200,s:1599798562)),p:(application:(d:Label,f:TAG_KEY,k:application,l:Application,m:(Label:'',Label_S:unnamed_application),q:'ts(%22process.uptime%22%20and%20source=%22$%7Bsource%7D%22)',s:Label_S,tbr:''),filter:(h:t,v:'%20and%20source=%22$%7Bsource%7D%22%20and%20application=%22$%7Bapplication%7D%22%20and%20service=%22$%7Bservice%7D%22'),service:(d:Label,f:TAG_KEY,k:service,l:Service,m:(Label:'',Label_S:unnamed_service),q:'ts(%22process.uptime%22%20AND%20source=%22$%7Bsource%7D%22%20AND%20application=%22$%7Bapplication%7D%22)',s:Label_S,tbr:''),source:(d:Label,f:SOURCE,k:'',l:Source,m:(Label:mrinals-macbook-pro.local),q:'ts(%22process.uptime%22)',tbr:'')))
+
