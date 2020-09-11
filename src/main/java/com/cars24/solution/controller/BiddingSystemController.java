@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,14 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cars24.solution.db.BiddingRepository;
-import com.cars24.solution.db.BiddingSystem;
-
-
-
+import com.cars24.solution.model.BiddingSystem;
+import com.cars24.solution.repository.BiddingRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 @RestController
 public class BiddingSystemController {
@@ -61,8 +60,17 @@ API should be paginated in nature. And you are free to change API structure base
 			int validBid = Math.max(bs.getMinimumBasePrice(), bs.getHighestBidPlaced() + bs.getStepRate());
 			
 			if(bidAmount >= validBid) {
-				bs.setHighestBidPlaced(bidAmount);
-				biddingRepository.save(bs);
+				
+				try {
+					bs.setHighestBidPlaced(bidAmount);
+					biddingRepository.save(bs);
+				}
+				catch(ObjectOptimisticLockingFailureException ex) {
+					
+					//A "Politically correct" way to handle conflicts in Restful apis
+					return ResponseEntity.status(409).body("Conflict, Try again");
+					
+				}
 				return ResponseEntity.status(201).body("Bid is Accepted");
 				
 			}

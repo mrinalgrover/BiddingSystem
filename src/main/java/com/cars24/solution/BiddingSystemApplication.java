@@ -4,11 +4,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import java.util.Random;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.cars24.solution.db.BiddingRepository;
-import com.cars24.solution.db.BiddingSystem;
+import com.cars24.solution.model.BiddingSystem;
+import com.cars24.solution.repository.BiddingRepository;
 
 @SpringBootApplication
 public class BiddingSystemApplication {
@@ -22,15 +25,17 @@ public class BiddingSystemApplication {
 	@Bean
 	public CommandLineRunner demo(BiddingRepository repository) {
 		return (args) -> {
-			// initialize auction
-
-			for(int i=0; i<25; i++)
-				repository.save(new BiddingSystem(100,10));
+			// Initialise auction
+			
+			Random rand = new Random(); 
+			
+			for(int i=0; i<100; i++)
+				repository.save(new BiddingSystem((rand.nextInt(10)+1)*100,100));
 
 			for (BiddingSystem bid : repository.findAll()) {
 				log.info(bid.toString());
 			}
-			log.info("");
+
 
 		};
 	}

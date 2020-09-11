@@ -1,10 +1,11 @@
-package com.cars24.solution.db;
+package com.cars24.solution.model;
 
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Version;
 
 enum Status{
 	RUNNING,
@@ -20,6 +21,18 @@ public class BiddingSystem {
     private int highestBidPlaced = 0;
     private int stepRate = 20;
     private Status isRunning = Status.RUNNING;
+    
+    //For optimistic locking
+    public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+
+	@Version
+    private Integer version;
     
     protected BiddingSystem() {}
 
