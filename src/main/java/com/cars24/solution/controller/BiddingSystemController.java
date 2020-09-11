@@ -55,36 +55,42 @@ public class BiddingSystemController {
 
 		
 		
-		log.info("Bidding for item - " + itemCode + ", amount : " + bidAmount);
-		
-		int userId = headers.get("userid")!= null ? Integer.parseInt(headers.get("userid")) : 0;
-		
-		if(authenticator.isUserLoggedIn(userId, headers.get("usertoken")))
-			log.info(userId + " placed the bid and is logged in");
-		
-		else {
-			return ResponseEntity.status(401).body("UnAuthorized, Send Valid UserId & UserToken");
-		}
-		
-		BiddingStatus status = bidValidator.isValidBid(itemCode, bidAmount);
-		
-		switch (status) {
-		
-		case BID_ACCEPTED: 
-			return ResponseEntity.status(201).body("Bid is Accepted");
+		try {
+			log.info("Bidding for item - " + itemCode + ", amount : " + bidAmount);
 			
-		case BID_REJECTED: 
-			return ResponseEntity.status(406).body("Bid is Rejected");
+			int userId = headers.get("userid")!= null ? Integer.parseInt(headers.get("userid")) : 0;
 			
-		case AUCTION_DOESNT_EXIST: 
-			return ResponseEntity.status(404).body("Auction not found");
+			if(authenticator.isUserLoggedIn(userId, headers.get("usertoken")))
+				log.info(userId + " placed the bid and is logged in");
+			
+			else {
+				return ResponseEntity.status(401).body("UnAuthorized, Send Valid UserId & UserToken");
+			}
+			
+			BiddingStatus status = bidValidator.isValidBid(itemCode, bidAmount);
+			
+			switch (status) {
+			
+			case BID_ACCEPTED: 
+				return ResponseEntity.status(201).body("Bid is Accepted");
+				
+			case BID_REJECTED: 
+				return ResponseEntity.status(406).body("Bid is Rejected");
+				
+			case AUCTION_DOESNT_EXIST: 
+				return ResponseEntity.status(404).body("Auction not found");
 
-		case BID_CONFLICT:
-			// A "Politically correct" way to handle conflicts in Restful apis
-			return ResponseEntity.status(409).body("Conflict, Try again");
+			case BID_CONFLICT:
+				// A "Politically correct" way to handle conflicts in Restful apis
+				return ResponseEntity.status(409).body("Conflict, Try again");
 
-		default:
+			default:
+				return ResponseEntity.status(501).body("Internal Server error");
+			}
+		} catch (NumberFormatException e) {
+			log.info("Exception - "+ e.toString());
 			return ResponseEntity.status(501).body("Internal Server error");
+			
 		}
 		
 		
