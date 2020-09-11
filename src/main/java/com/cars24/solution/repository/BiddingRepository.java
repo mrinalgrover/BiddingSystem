@@ -10,3 +10,4 @@ public interface BiddingRepository extends PagingAndSortingRepository<BiddingSys
   BiddingSystem findById(int id);
   
 }
+
