@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.SortDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +42,7 @@ API should be paginated in nature. And you are free to change API structure base
 	Pageable pageable){
 		
 		return  biddingRepository.findAll(pageable);
+		
 	}
 
 
@@ -56,20 +55,24 @@ API should be paginated in nature. And you are free to change API structure base
 		
 		BiddingSystem bs = biddingRepository.findById(itemCode);
 		
-		if(bs!= null && bs.getId() == itemCode)
-			return ResponseEntity.status(201).body("Bid is Accepted");
+		if(bs!= null && bs.getId() == itemCode) {
+			
+			
+			int validBid = Math.max(bs.getMinimumBasePrice(), bs.getHighestBidPlaced() + bs.getStepRate());
+			
+			if(bidAmount >= validBid) {
+				bs.setHighestBidPlaced(bidAmount);
+				biddingRepository.save(bs);
+				return ResponseEntity.status(201).body("Bid is Accepted");
+				
+			}
+			
+			else
+				return ResponseEntity.status(406).body("Bid is Rejected");
+		}
 		else
-			return ResponseEntity.status(406).body("Bid is Rejected");
+			return ResponseEntity.status(404).body("Auction not found");
 
-//		BiddingSystem bs = new BiddingSystem();
-		//User n = new User();
-		// n.setName(name);
-		//n.setEmail(email);
-//		bs.setId(id);
-//		bs.setMinimumBasePrice(100);
-//		bs.setRunning(true);
-//		bs.setStepRate(step);
-//		userRepository.save(bs);
 		
 		
 	}
