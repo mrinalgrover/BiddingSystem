@@ -10,8 +10,8 @@ cURL - Test the service
 Techstack chosen and reasons : 
 
 1. The project was created in mind that it can be deployed without any external dependencies. 
-2. Springboot framework with web starter kit used for easy setup of REST APIs 
-3. JPA with H2 database is used to keep the data (Auction and User Store) in memory so doesn't require mySQL setup. The solution is expandable and can easily incorporate changes to use an actual database storage.
+2. Springboot framework with web starter kit used for easy setup of REST APIs. Testcases are written in JUNIT 5
+3. JPA with H2 database is used to keep the data (Auction and User Store) in memory so doesn't require mySQL setup. The solution is expandable and can easily incorporate changes to use an actual database storage. 
 
 
 Steps to build and run the project -
@@ -44,6 +44,7 @@ Date: Fri, 11 Sep 2020 10:58:27 GMT
 
 Bid is Accepted
 
+AuthenticatorService will give 401 if the headers are not present.
 
 6. Conflicts are handled using Optimistic Locking. If there's a race condition, competing bid is rejected.
 
